@@ -1,0 +1,25 @@
+version: '3.8'
+networks:
+  app-network: null
+services:
+  nginx:
+    image: 'nginx:stable-alpine'
+    container_name: 'nginx_homecare_test'
+    ports:
+      - '80:80'
+    volumes:
+      - './dist:/usr/share/nginx/html'
+      - './nginx.conf:/etc/nginx/conf.d/default.conf'
+    networks:
+      - app-network
+  
+  npm:
+    image: 'node:19.0.1-alpine3.15'
+    container_name: 'node_homecare_test'
+    volumes:
+      - './src:/var/www/html'
+    working_dir: /var/www/html
+    networks:
+      - app-network
+    entrypoint:
+      - npm
